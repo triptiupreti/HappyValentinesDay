@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Annu ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(to top, #ff9a9e, #fad0c4);
+    overflow: hidden;
+}
+
+/* Start Screen */
+#startOverlay {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #ff4d6d;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Main */
+#mainContent {
+    display: none;
+    padding-top: 40px;
+}
+
+img {
+    width: 250px;
+    margin: 20px;
+}
+
+#question {
+    font-size: 28px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#yes {
+    background: #ff3366;
+    color: white;
+}
+
+#no {
+    background: grey;
+    color: white;
+    position: absolute;
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to { transform: translateY(100vh); }
+}
+
+/* Hearts */
+.heart {
+    position: fixed;
+    color: red;
+    font-size: 20px;
+    animation: floatUp 4s linear infinite;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Babies */
+.baby {
+    position: fixed;
+    bottom: 0;
+    width: 80px;
+    animation: walk 10s linear infinite;
+}
+
+@keyframes walk {
+    from { transform: translateX(-100px); }
+    to { transform: translateX(110vw); }
+}
+
+/* WhatsApp Button */
+.whatsappBtn {
+    background:#25D366;
+    color:white;
+    font-size:20px;
+    padding:15px 30px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" src="music.mp3" loop preload="auto"></audio>
+<audio id="confettiSound" src="confetti.mp3" preload="auto"></audio>
+
+<div id="startOverlay">
+    Tap to Begin ❤️
+</div>
+
+<div id="mainContent">
+    <img src="female.png">
+    <img src="male.png">
+
+    <div id="question">
+        Annu, will you be my Valentine? ❤️
+    </div>
+
+    <button id="yes">YES 💖</button>
+    <button id="no">NO 😏</button>
+</div>
+
+<script>
+
+let yesSize = 20;
+
+/* Start Experience */
+document.getElementById("startOverlay").addEventListener("click", function() {
+    document.getElementById("bgMusic").play();
+    this.style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+});
+
+/* NO runs away */
+document.getElementById("no").addEventListener("mouseover", function() {
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 100);
+
+    this.style.left = x + "px";
+    this.style.top = y + "px";
+    this.style.transform = "scale(0.6)";
+
+    yesSize += 5;
+    document.getElementById("yes").style.fontSize = yesSize + "px";
+});
+
+/* YES Click */
+document.getElementById("yes").addEventListener("click", function() {
+
+    /* Play Confetti Sound */
+    let sound = document.getElementById("confettiSound");
+    sound.currentTime = 0;
+    sound.play();
+
+    /* Change Screen */
+    document.getElementById("mainContent").innerHTML = `
+        <h1 style="font-size:45px;">Yayyyy I'm so happyyyy ❤️🎉</h1>
+        <img src="wedding.png" style="width:450px;">
+        <div id="whatsappContainer"></div>
+    `;
+
+    /* Confetti Animation */
+    for (let i = 0; i < 120; i++) {
+        let confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor =
+            "hsl(" + Math.random() * 360 + ",100%,50%)";
+        confetti.style.animationDuration =
+            Math.random() * 3 + 2 + "s";
+        document.body.appendChild(confetti);
+    }
+
+    /* Heart Rain */
+    setInterval(() => {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+    }, 300);
+
+    /* Walking Babies */
+    for (let i = 0; i < 3; i++) {
+        let baby = document.createElement("img");
+        baby.src = "baby.png";
+        baby.className = "baby";
+        baby.style.animationDelay = (i * 3) + "s";
+        document.body.appendChild(baby);
+    }
+
+    /* Show WhatsApp Button After 10 Seconds */
+    setTimeout(function() {
+        let yourNumber = "917248485707";
+        let message = "I said YES ❤️";
+
+        let whatsappURL =
+            "https://wa.me/" + yourNumber +
+            "?text=" + encodeURIComponent(message);
+
+        document.getElementById("whatsappContainer").innerHTML = `
+            <br><br>
+            <button class="whatsappBtn"
+                onclick="window.open('${whatsappURL}','_blank')">
+                Tell Her on WhatsApp 💬
+            </button>
+        `;
+    }, 10000);
+
+});
+
+</script>
+
+</body>
+</html>
+
